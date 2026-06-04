@@ -11,11 +11,15 @@ function App() {
   const loadCatalog = React.useCallback(async () => {
     try {
       const response = await fetch("/api/catalog");
-      if (!response.ok) throw new Error("Catalog API failed");
-      setCatalog(await response.json());
+      const text = await response.text();
+      const data = text ? JSON.parse(text) : null;
+      if (!response.ok) {
+        throw new Error(data?.error || `Catalog API failed (${response.status})`);
+      }
+      setCatalog(data);
       setError("");
     } catch (err) {
-      setError("Flask backend is not running. Start it with python app.py and refresh.");
+      setError(err.message || "Flask backend is not running. Start it with python app.py and refresh.");
     }
   }, []);
 
@@ -118,7 +122,7 @@ function DashboardPage({ catalog }) {
 }
 
 function AnalyzerPage({ catalog, reloadCatalog }) {
-  const [strategy, setStrategy] = React.useState("balanced");
+  const defaultStrategy = "balanced";
   const [overrides, setOverrides] = React.useState(() => buildOverrides(catalog.products));
   const [payload, setPayload] = React.useState(null);
   const [loading, setLoading] = React.useState(false);
@@ -145,14 +149,15 @@ function AnalyzerPage({ catalog, reloadCatalog }) {
       const response = await fetch("/api/analyze-catalog", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ strategy, overrides }),
+        body: JSON.stringify({ strategy: defaultStrategy, overrides }),
       });
-      const nextPayload = await response.json();
+      const text = await response.text();
+      const nextPayload = text ? JSON.parse(text) : {};
       setPayload(nextPayload);
       await reloadCatalog();
       if (!response.ok) setError(nextPayload.error || "Could not analyze the full catalog.");
     } catch (err) {
-      setError("Could not reach /api/analyze-catalog.");
+      setError(err.message || "Could not reach /api/analyze-catalog.");
     } finally {
       setLoading(false);
     }
@@ -189,23 +194,6 @@ function AnalyzerPage({ catalog, reloadCatalog }) {
           },
         },
         h("h2", null, "Catalog-wide analysis"),
-        h(Field, {
-          label: "Products included in this run",
-          children: h("input", { value: `${catalog.products.length} catalog SKUs`, readOnly: true }),
-        }),
-        h(Field, {
-          label: "Strategy",
-          children: h(Select, {
-            value: strategy,
-            onChange: setStrategy,
-            options: [
-              ["balanced", "Balanced"],
-              ["protect_margin", "Protect margin"],
-              ["win_share", "Win share"],
-              ["clear_inventory", "Clear inventory"],
-            ],
-          }),
-        }),
         h("h3", null, "Per-SKU overrides"),
         h("p", { className: "subtle-note" }, "You can change customer demand units or strategy for any SKU before running the full catalog analysis."),
         h(
@@ -223,7 +211,7 @@ function AnalyzerPage({ catalog, reloadCatalog }) {
                 h(Field, {
                   label: "Strategy",
                   children: h(Select, {
-                    value: overrides[product.sku]?.strategy || strategy,
+                    value: overrides[product.sku]?.strategy || defaultStrategy,
                     onChange: (value) => updateOverride(product.sku, "strategy", value),
                     options: [
                       ["balanced", "Balanced"],

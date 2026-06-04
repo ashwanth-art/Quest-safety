@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import json
+import os
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
@@ -18,6 +19,9 @@ AUDIT_LOG_FILE = BASE_DIR / "data" / "price_audit_log.jsonl"
 ENV_FILE = BASE_DIR / ".env"
 
 load_dotenv(ENV_FILE)
+
+IS_VERCEL = bool(os.getenv("VERCEL") or os.getenv("VERCEL_ENV"))
+VERCEL_LIVE_LOOKUP_ENABLED = os.getenv("QUEST_ENABLE_VERCEL_LIVE", "").strip().lower() in {"1", "true", "yes"}
 
 
 def load_catalog() -> dict[str, Any]:
@@ -45,6 +49,12 @@ def create_app() -> Flask:
         with AUDIT_LOG_FILE.open("a", encoding="utf-8") as handle:
             handle.write(json.dumps(entry) + "\n")
 
+    def persistence_enabled() -> bool:
+        return not IS_VERCEL
+
+    def live_catalog_run_enabled() -> bool:
+        return not IS_VERCEL or VERCEL_LIVE_LOOKUP_ENABLED
+
     def apply_price_update(
         sku: str,
         new_price: float,
@@ -61,7 +71,8 @@ def create_app() -> Flask:
         previous_price = float(product.get("current_price", 0))
         rounded_price = round(float(new_price), 2)
         product["current_price"] = rounded_price
-        save_catalog(catalog_data)
+        if persistence_enabled():
+            save_catalog(catalog_data)
 
         audit_entry = {
             "timestamp": datetime.now(timezone.utc).isoformat(),
@@ -76,7 +87,8 @@ def create_app() -> Flask:
             "previous_price": previous_price,
             "updated_price": rounded_price,
         }
-        write_audit_entry(audit_entry)
+        if persistence_enabled():
+            write_audit_entry(audit_entry)
         return {
             "status": "applied",
             "decision": decision,
@@ -100,14 +112,25 @@ def create_app() -> Flask:
         market_mode = "live_requested"
         market_provider = "live lookup"
         market_message = "Live competitor lookup is running."
+        use_live_lookup = live_catalog_run_enabled()
 
-        live_result = market_data.fetch_for_product(sku, product)
-        market_provider = live_result.provider
-        market_message = live_result.message
-        excluded_competitors = live_result.rejected_observations
-        live_candidate_count = len(live_result.observations)
-        competitor_override = live_result.observations
-        market_mode = live_result.status
+        if use_live_lookup:
+            live_result = market_data.fetch_for_product(sku, product)
+            market_provider = live_result.provider
+            market_message = live_result.message
+            excluded_competitors = live_result.rejected_observations
+            live_candidate_count = len(live_result.observations)
+            competitor_override = live_result.observations
+            market_mode = live_result.status
+        else:
+            competitor_override = list((product or {}).get("competitors", []))
+            market_override_applied = False
+            market_mode = "sample"
+            market_provider = "Quest catalog samples"
+            market_message = (
+                "Vercel deployment is using stored competitor samples for catalog-wide runs. "
+                "Live 22-SKU sweeps and file-based auto-publish are not reliable inside a serverless request."
+            )
 
         result = agent.analyze(
             AgentInputs(
@@ -132,22 +155,30 @@ def create_app() -> Flask:
             recommended_price = calc.get("recommended_price")
 
             if route == "Auto approve" and isinstance(recommended_price, (int, float)):
-                publish = apply_price_update(
-                    sku=result["product"]["sku"],
-                    new_price=float(recommended_price),
-                    decision="auto_approve",
-                    actor="Quest Pricing Agent",
-                    note="Low-risk recommendation auto-applied.",
-                    source_route=route,
-                    risk=risk,
-                )
-                result["product"] = publish["product"]
-                result["publish"] = {
-                    "status": "auto_applied",
-                    "message": "Low-risk recommendation was automatically applied to the Quest pricing dataset.",
-                    "previous_price": publish["previous_price"],
-                    "updated_price": publish["updated_price"],
-                }
+                if persistence_enabled():
+                    publish = apply_price_update(
+                        sku=result["product"]["sku"],
+                        new_price=float(recommended_price),
+                        decision="auto_approve",
+                        actor="Quest Pricing Agent",
+                        note="Low-risk recommendation auto-applied.",
+                        source_route=route,
+                        risk=risk,
+                    )
+                    result["product"] = publish["product"]
+                    result["publish"] = {
+                        "status": "auto_applied",
+                        "message": "Low-risk recommendation was automatically applied to the Quest pricing dataset.",
+                        "previous_price": publish["previous_price"],
+                        "updated_price": publish["updated_price"],
+                    }
+                else:
+                    result["publish"] = {
+                        "status": "auto_applied",
+                        "message": "Low-risk recommendation was auto-approved in preview mode. Vercel deployment cannot persist catalog file updates.",
+                        "previous_price": calc.get("current_price"),
+                        "updated_price": float(recommended_price),
+                    }
             else:
                 result["publish"] = {
                     "status": "pending_review",
@@ -301,11 +332,16 @@ def create_app() -> Flask:
                 "previous_price": float(product.get("current_price", 0)),
                 "updated_price": float(product.get("current_price", 0)),
             }
-            write_audit_entry(audit_entry)
+            if persistence_enabled():
+                write_audit_entry(audit_entry)
             return jsonify(
                 {
                     "status": "rejected",
-                    "message": "Price change was rejected. Current Quest price was left unchanged.",
+                    "message": (
+                        "Price change was rejected. Current Quest price was left unchanged."
+                        if persistence_enabled()
+                        else "Price change was rejected in preview mode. Vercel deployment does not persist local file updates."
+                    ),
                     "product": product,
                 }
             )
