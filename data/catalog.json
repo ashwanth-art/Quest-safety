@@ -1,0 +1,1006 @@
+{
+  "currency": "USD",
+  "sources": [
+    "Quest Safety public catalog pages",
+    "Quest Safety ecommerce and account price context",
+    "Amazon",
+    "Grainger",
+    "Zoro",
+    "Fastenal",
+    "Uline",
+    "Regional distributors",
+    "Manufacturer feeds"
+  ],
+  "products": [
+    {
+      "sku": "GF242412",
+      "mpn": "HEP1024",
+      "product": "NC Filtration HEPA Filter, Glass Microfiber 24x24x11.5",
+      "category": "Indoor Air Quality",
+      "brand": "NC Filtration",
+      "uom": "EA",
+      "current_price": 177.81,
+      "cost": 129.8,
+      "stock": 42,
+      "base_demand": "stable",
+      "supply": "good",
+      "min_margin": 0.27,
+      "source_url": "https://www.questsafety.com/nc-filtration-hepa-filter-glass-microfiber-24x24x115-nchp242412h910-gf242412",
+      "competitors": [
+        {
+          "source": "Amazon",
+          "price": 187.4,
+          "stock": "In stock",
+          "freshness_hours": 8,
+          "match_score": 0.93
+        },
+        {
+          "source": "Grainger",
+          "price": 196.2,
+          "stock": "In stock",
+          "freshness_hours": 18,
+          "match_score": 0.91
+        },
+        {
+          "source": "Zoro",
+          "price": 183.1,
+          "stock": "Limited",
+          "freshness_hours": 12,
+          "match_score": 0.9
+        },
+        {
+          "source": "Fastenal",
+          "price": 190.6,
+          "stock": "In stock",
+          "freshness_hours": 26,
+          "match_score": 0.88
+        }
+      ]
+    },
+    {
+      "sku": "1050017",
+      "mpn": "1050017",
+      "product": "Zep Freshen Disinfectant Spray, Ready-to-Use 15.5 oz Aerosol",
+      "category": "Disinfectants",
+      "brand": "Zep",
+      "uom": "EA",
+      "current_price": 23.43,
+      "cost": 5.2,
+      "stock": 318,
+      "base_demand": "rising",
+      "supply": "good",
+      "min_margin": 0.3,
+      "source_url": "https://www.questsafety.com/zep-freshen-disinfectant-spray-gas-ready-to-use-155-oz-aerosol-1050017",
+      "competitors": [
+        {
+          "source": "Amazon",
+          "price": 9.18,
+          "stock": "In stock",
+          "freshness_hours": 9,
+          "match_score": 0.9
+        },
+        {
+          "source": "Grainger",
+          "price": 10.12,
+          "stock": "In stock",
+          "freshness_hours": 17,
+          "match_score": 0.88
+        },
+        {
+          "source": "Zoro",
+          "price": 8.84,
+          "stock": "In stock",
+          "freshness_hours": 13,
+          "match_score": 0.92
+        },
+        {
+          "source": "Uline",
+          "price": 8.75,
+          "stock": "In stock",
+          "freshness_hours": 22,
+          "match_score": 0.86
+        }
+      ]
+    },
+    {
+      "sku": "103L-1",
+      "mpn": "103L-1",
+      "product": "Gasco Calibration Gas Methane 50% LEL 2.5% Volume Balance Air 103L",
+      "category": "Calibration Gas",
+      "brand": "Gasco",
+      "uom": "EA",
+      "current_price": 92.65,
+      "cost": 66.4,
+      "stock": 64,
+      "base_demand": "high",
+      "supply": "good",
+      "min_margin": 0.28,
+      "source_url": "https://www.questsafety.com/gasco-calibration-gas-methane-50-lel-25-volume-balance-air-103l-103l-1",
+      "competitors": [
+        {
+          "source": "Amazon",
+          "price": 98.8,
+          "stock": "Limited",
+          "freshness_hours": 11,
+          "match_score": 0.84
+        },
+        {
+          "source": "Grainger",
+          "price": 102.2,
+          "stock": "In stock",
+          "freshness_hours": 20,
+          "match_score": 0.87
+        },
+        {
+          "source": "Zoro",
+          "price": 95.7,
+          "stock": "In stock",
+          "freshness_hours": 6,
+          "match_score": 0.9
+        },
+        {
+          "source": "Regional distributor",
+          "price": 94.3,
+          "stock": "In stock",
+          "freshness_hours": 30,
+          "match_score": 0.76
+        }
+      ]
+    },
+    {
+      "sku": "IC253BWH2X0025CS",
+      "mpn": "IC253BWH2X0025CS",
+      "product": "DuPont Tyvek IsoClean Clean-Processed Sterile Coveralls, 2XL",
+      "category": "Disposable Coveralls",
+      "brand": "IsoClean",
+      "uom": "CS",
+      "current_price": 687.05,
+      "cost": 501.55,
+      "stock": 19,
+      "base_demand": "rising",
+      "supply": "constrained",
+      "min_margin": 0.27,
+      "source_url": "https://www.questsafety.com/dupont-tyvek-isoclean-clean-processed-and-sterile-coveralls.html",
+      "competitors": [
+        {
+          "source": "Amazon",
+          "price": 735.7,
+          "stock": "Limited",
+          "freshness_hours": 16,
+          "match_score": 0.8
+        },
+        {
+          "source": "Grainger",
+          "price": 762.0,
+          "stock": "In stock",
+          "freshness_hours": 24,
+          "match_score": 0.83
+        },
+        {
+          "source": "Zoro",
+          "price": 714.8,
+          "stock": "Limited",
+          "freshness_hours": 10,
+          "match_score": 0.84
+        },
+        {
+          "source": "Manufacturer feed",
+          "price": 721.5,
+          "stock": "Constrained",
+          "freshness_hours": 4,
+          "match_score": 0.95
+        }
+      ]
+    },
+    {
+      "sku": "018-5009",
+      "mpn": "018-5009",
+      "product": "Safewaze Self-Retracting Lifeline, 7 ft",
+      "category": "Fall Protection",
+      "brand": "Safewaze",
+      "uom": "EA",
+      "current_price": 250.0,
+      "cost": 126.9,
+      "stock": 33,
+      "base_demand": "stable",
+      "supply": "good",
+      "min_margin": 0.25,
+      "source_url": "https://www.questsafety.com/safewaze-018-5009-self-retracting-lifeline-7-ft-018-5009",
+      "competitors": [
+        {
+          "source": "Amazon",
+          "price": 166.0,
+          "stock": "In stock",
+          "freshness_hours": 14,
+          "match_score": 0.82
+        },
+        {
+          "source": "Grainger",
+          "price": 182.5,
+          "stock": "In stock",
+          "freshness_hours": 18,
+          "match_score": 0.85
+        },
+        {
+          "source": "Zoro",
+          "price": 169.7,
+          "stock": "In stock",
+          "freshness_hours": 7,
+          "match_score": 0.89
+        },
+        {
+          "source": "Fastenal",
+          "price": 174.2,
+          "stock": "In stock",
+          "freshness_hours": 25,
+          "match_score": 0.8
+        }
+      ]
+    },
+    {
+      "sku": "PR501M",
+      "mpn": "PR501M",
+      "product": "NORTH by Honeywell PR500 Series PR501 Powered Air Purifying Respirator",
+      "category": "Powered Air Purifying Respirators",
+      "brand": "NORTH",
+      "uom": "EA",
+      "current_price": 549.85,
+      "cost": 422.5,
+      "stock": 7,
+      "base_demand": "high",
+      "supply": "constrained",
+      "min_margin": 0.25,
+      "source_url": "https://www.questsafety.com/north-by-honeywell-pr500-series-pr501-powered-air-purifying-respirator-mask-front-blower-mounting-pr501m",
+      "competitors": [
+        {
+          "source": "Amazon",
+          "price": 598.9,
+          "stock": "Limited",
+          "freshness_hours": 20,
+          "match_score": 0.76
+        },
+        {
+          "source": "Grainger",
+          "price": 622.1,
+          "stock": "In stock",
+          "freshness_hours": 19,
+          "match_score": 0.78
+        },
+        {
+          "source": "Zoro",
+          "price": 573.4,
+          "stock": "Limited",
+          "freshness_hours": 5,
+          "match_score": 0.84
+        },
+        {
+          "source": "Manufacturer feed",
+          "price": 589.0,
+          "stock": "Constrained",
+          "freshness_hours": 4,
+          "match_score": 0.92
+        }
+      ]
+    },
+    {
+      "sku": "S-3112-30",
+      "mpn": "S-3112-30",
+      "product": "ILC Dover Sentinel Clear XT Hoods, 30 per case",
+      "category": "Respirator Hoods",
+      "brand": "ILC Dover",
+      "uom": "CS",
+      "current_price": 937.37,
+      "cost": 712.4,
+      "stock": 12,
+      "base_demand": "stable",
+      "supply": "limited",
+      "min_margin": 0.24,
+      "source_url": "https://www.questsafety.com/ilc-dover-sentinel-clear-xt-hoods-s-3112-30",
+      "competitors": [
+        {
+          "source": "Amazon",
+          "price": 969.4,
+          "stock": "Limited",
+          "freshness_hours": 30,
+          "match_score": 0.72
+        },
+        {
+          "source": "Grainger",
+          "price": 1005.0,
+          "stock": "In stock",
+          "freshness_hours": 28,
+          "match_score": 0.8
+        },
+        {
+          "source": "Zoro",
+          "price": 947.8,
+          "stock": "Limited",
+          "freshness_hours": 12,
+          "match_score": 0.83
+        },
+        {
+          "source": "Regional distributor",
+          "price": 930.1,
+          "stock": "Unknown",
+          "freshness_hours": 40,
+          "match_score": 0.66
+        }
+      ]
+    },
+    {
+      "sku": "ICO-164",
+      "mpn": "ICO-164",
+      "product": "6 Panel InstaCube Saliva Drug Test",
+      "category": "Test Kits",
+      "brand": "Quest Safety Products",
+      "uom": "EA",
+      "current_price": 8.62,
+      "cost": 5.95,
+      "stock": 246,
+      "base_demand": "rising",
+      "supply": "good",
+      "min_margin": 0.31,
+      "source_url": "https://www.questsafety.com/6-panel-instacube-saliva-drug-test-ico-164",
+      "competitors": [
+        {
+          "source": "Amazon",
+          "price": 9.8,
+          "stock": "In stock",
+          "freshness_hours": 12,
+          "match_score": 0.86
+        },
+        {
+          "source": "Grainger",
+          "price": 10.6,
+          "stock": "In stock",
+          "freshness_hours": 22,
+          "match_score": 0.8
+        },
+        {
+          "source": "Zoro",
+          "price": 9.45,
+          "stock": "In stock",
+          "freshness_hours": 8,
+          "match_score": 0.88
+        },
+        {
+          "source": "Regional distributor",
+          "price": 9.25,
+          "stock": "In stock",
+          "freshness_hours": 16,
+          "match_score": 0.78
+        }
+      ]
+    },
+    {
+      "sku": "A1-201",
+      "mpn": "A1-201",
+      "product": "Ansell HyFlex Cut Resistant Gloves, Size Large",
+      "category": "Hand Protection",
+      "brand": "Ansell",
+      "uom": "EA",
+      "current_price": 14.45,
+      "cost": 9.1,
+      "stock": 184,
+      "base_demand": "rising",
+      "supply": "good",
+      "min_margin": 0.28,
+      "source_url": "https://www.questsafety.com/ansell-hyflex-cut-resistant-gloves-a1-201",
+      "competitors": [
+        {
+          "source": "Amazon",
+          "price": 15.1,
+          "stock": "In stock",
+          "freshness_hours": 8,
+          "match_score": 0.87
+        },
+        {
+          "source": "Grainger",
+          "price": 16.4,
+          "stock": "In stock",
+          "freshness_hours": 16,
+          "match_score": 0.89
+        },
+        {
+          "source": "Zoro",
+          "price": 14.95,
+          "stock": "In stock",
+          "freshness_hours": 11,
+          "match_score": 0.86
+        },
+        {
+          "source": "Fastenal",
+          "price": 15.7,
+          "stock": "In stock",
+          "freshness_hours": 19,
+          "match_score": 0.84
+        }
+      ]
+    },
+    {
+      "sku": "MCR-9670XL",
+      "mpn": "9670XL",
+      "product": "MCR Safety Nitrile Gloves, One Size XL",
+      "category": "Hand Protection",
+      "brand": "MCR Safety",
+      "uom": "EA",
+      "current_price": 12.95,
+      "cost": 7.4,
+      "stock": 276,
+      "base_demand": "stable",
+      "supply": "good",
+      "min_margin": 0.29,
+      "source_url": "https://www.questsafety.com/mcr-safety-nitrile-gloves-9670xl",
+      "competitors": [
+        {
+          "source": "Amazon",
+          "price": 13.6,
+          "stock": "In stock",
+          "freshness_hours": 10,
+          "match_score": 0.88
+        },
+        {
+          "source": "Grainger",
+          "price": 14.2,
+          "stock": "In stock",
+          "freshness_hours": 18,
+          "match_score": 0.86
+        },
+        {
+          "source": "Zoro",
+          "price": 13.1,
+          "stock": "In stock",
+          "freshness_hours": 12,
+          "match_score": 0.87
+        },
+        {
+          "source": "Uline",
+          "price": 13.9,
+          "stock": "In stock",
+          "freshness_hours": 21,
+          "match_score": 0.82
+        }
+      ]
+    },
+    {
+      "sku": "3M-6200",
+      "mpn": "6200",
+      "product": "3M Half Facepiece Reusable Respirator, Medium",
+      "category": "Respirators",
+      "brand": "3M",
+      "uom": "EA",
+      "current_price": 28.6,
+      "cost": 18.2,
+      "stock": 91,
+      "base_demand": "stable",
+      "supply": "good",
+      "min_margin": 0.27,
+      "source_url": "https://www.questsafety.com/3m-half-facepiece-reusable-respirator-6200",
+      "competitors": [
+        {
+          "source": "Amazon",
+          "price": 29.8,
+          "stock": "In stock",
+          "freshness_hours": 7,
+          "match_score": 0.92
+        },
+        {
+          "source": "Grainger",
+          "price": 31.4,
+          "stock": "In stock",
+          "freshness_hours": 14,
+          "match_score": 0.9
+        },
+        {
+          "source": "Zoro",
+          "price": 30.1,
+          "stock": "In stock",
+          "freshness_hours": 10,
+          "match_score": 0.91
+        },
+        {
+          "source": "Fastenal",
+          "price": 30.9,
+          "stock": "In stock",
+          "freshness_hours": 20,
+          "match_score": 0.86
+        }
+      ]
+    },
+    {
+      "sku": "BW-MC2XT",
+      "mpn": "MC2-XT",
+      "product": "Honeywell BW MicroClip XT Multi-Gas Detector",
+      "category": "Gas Detection",
+      "brand": "Honeywell BW",
+      "uom": "EA",
+      "current_price": 512.0,
+      "cost": 388.0,
+      "stock": 28,
+      "base_demand": "rising",
+      "supply": "limited",
+      "min_margin": 0.26,
+      "source_url": "https://www.questsafety.com/honeywell-bw-microclip-xt-multi-gas-detector-mc2-xt",
+      "competitors": [
+        {
+          "source": "Amazon",
+          "price": 529.0,
+          "stock": "Limited",
+          "freshness_hours": 9,
+          "match_score": 0.84
+        },
+        {
+          "source": "Grainger",
+          "price": 548.0,
+          "stock": "In stock",
+          "freshness_hours": 18,
+          "match_score": 0.88
+        },
+        {
+          "source": "Zoro",
+          "price": 534.5,
+          "stock": "In stock",
+          "freshness_hours": 13,
+          "match_score": 0.86
+        },
+        {
+          "source": "Manufacturer feed",
+          "price": 541.2,
+          "stock": "In stock",
+          "freshness_hours": 6,
+          "match_score": 0.93
+        }
+      ]
+    },
+    {
+      "sku": "MSA-10107602",
+      "mpn": "10107602",
+      "product": "MSA V-Gard Hard Hat, White",
+      "category": "Head Protection",
+      "brand": "MSA",
+      "uom": "EA",
+      "current_price": 22.75,
+      "cost": 14.25,
+      "stock": 205,
+      "base_demand": "stable",
+      "supply": "good",
+      "min_margin": 0.27,
+      "source_url": "https://www.questsafety.com/msa-v-gard-hard-hat-white-10107602",
+      "competitors": [
+        {
+          "source": "Amazon",
+          "price": 23.6,
+          "stock": "In stock",
+          "freshness_hours": 6,
+          "match_score": 0.9
+        },
+        {
+          "source": "Grainger",
+          "price": 24.9,
+          "stock": "In stock",
+          "freshness_hours": 12,
+          "match_score": 0.89
+        },
+        {
+          "source": "Zoro",
+          "price": 23.95,
+          "stock": "In stock",
+          "freshness_hours": 11,
+          "match_score": 0.88
+        },
+        {
+          "source": "Fastenal",
+          "price": 24.3,
+          "stock": "In stock",
+          "freshness_hours": 22,
+          "match_score": 0.84
+        }
+      ]
+    },
+    {
+      "sku": "ERB-S690",
+      "mpn": "S690",
+      "product": "ERB High Visibility Safety Vest, Lime Large",
+      "category": "Hi-Vis Apparel",
+      "brand": "ERB",
+      "uom": "EA",
+      "current_price": 12.35,
+      "cost": 6.9,
+      "stock": 139,
+      "base_demand": "stable",
+      "supply": "good",
+      "min_margin": 0.3,
+      "source_url": "https://www.questsafety.com/erb-high-visibility-safety-vest-s690",
+      "competitors": [
+        {
+          "source": "Amazon",
+          "price": 12.4,
+          "stock": "In stock",
+          "freshness_hours": 8,
+          "match_score": 0.87
+        },
+        {
+          "source": "Grainger",
+          "price": 13.1,
+          "stock": "In stock",
+          "freshness_hours": 15,
+          "match_score": 0.86
+        },
+        {
+          "source": "Zoro",
+          "price": 12.05,
+          "stock": "In stock",
+          "freshness_hours": 10,
+          "match_score": 0.88
+        },
+        {
+          "source": "Uline",
+          "price": 12.8,
+          "stock": "In stock",
+          "freshness_hours": 24,
+          "match_score": 0.81
+        }
+      ]
+    },
+    {
+      "sku": "KLEEN-42104",
+      "mpn": "42104",
+      "product": "KleenGuard A40 Liquid and Particle Protection Coveralls, XL",
+      "category": "Disposable Coveralls",
+      "brand": "KleenGuard",
+      "uom": "CS",
+      "current_price": 151.58,
+      "cost": 111.5,
+      "stock": 48,
+      "base_demand": "rising",
+      "supply": "good",
+      "min_margin": 0.26,
+      "source_url": "https://www.questsafety.com/kleenguard-a40-coveralls-42104",
+      "competitors": [
+        {
+          "source": "Amazon",
+          "price": 169.0,
+          "stock": "In stock",
+          "freshness_hours": 11,
+          "match_score": 0.85
+        },
+        {
+          "source": "Grainger",
+          "price": 174.5,
+          "stock": "In stock",
+          "freshness_hours": 19,
+          "match_score": 0.87
+        },
+        {
+          "source": "Zoro",
+          "price": 166.8,
+          "stock": "In stock",
+          "freshness_hours": 12,
+          "match_score": 0.86
+        },
+        {
+          "source": "Uline",
+          "price": 171.2,
+          "stock": "Limited",
+          "freshness_hours": 27,
+          "match_score": 0.8
+        }
+      ]
+    },
+    {
+      "sku": "DBI-3101001",
+      "mpn": "3101001",
+      "product": "3M DBI-SALA ExoFit Harness, Medium",
+      "category": "Fall Protection",
+      "brand": "3M DBI-SALA",
+      "uom": "EA",
+      "current_price": 289.9,
+      "cost": 214.0,
+      "stock": 16,
+      "base_demand": "stable",
+      "supply": "limited",
+      "min_margin": 0.25,
+      "source_url": "https://www.questsafety.com/3m-dbi-sala-exofit-harness-3101001",
+      "competitors": [
+        {
+          "source": "Amazon",
+          "price": 301.5,
+          "stock": "Limited",
+          "freshness_hours": 12,
+          "match_score": 0.82
+        },
+        {
+          "source": "Grainger",
+          "price": 315.0,
+          "stock": "In stock",
+          "freshness_hours": 18,
+          "match_score": 0.86
+        },
+        {
+          "source": "Zoro",
+          "price": 304.2,
+          "stock": "In stock",
+          "freshness_hours": 10,
+          "match_score": 0.84
+        },
+        {
+          "source": "Fastenal",
+          "price": 309.8,
+          "stock": "Limited",
+          "freshness_hours": 20,
+          "match_score": 0.8
+        }
+      ]
+    },
+    {
+      "sku": "PELTOR-X4A",
+      "mpn": "X4A",
+      "product": "3M PELTOR X4A Earmuffs, Headband",
+      "category": "Hearing Protection",
+      "brand": "3M PELTOR",
+      "uom": "EA",
+      "current_price": 31.2,
+      "cost": 20.7,
+      "stock": 112,
+      "base_demand": "stable",
+      "supply": "good",
+      "min_margin": 0.28,
+      "source_url": "https://www.questsafety.com/3m-peltor-x4a-earmuffs",
+      "competitors": [
+        {
+          "source": "Amazon",
+          "price": 32.4,
+          "stock": "In stock",
+          "freshness_hours": 9,
+          "match_score": 0.91
+        },
+        {
+          "source": "Grainger",
+          "price": 33.6,
+          "stock": "In stock",
+          "freshness_hours": 16,
+          "match_score": 0.89
+        },
+        {
+          "source": "Zoro",
+          "price": 32.8,
+          "stock": "In stock",
+          "freshness_hours": 12,
+          "match_score": 0.9
+        },
+        {
+          "source": "Fastenal",
+          "price": 33.1,
+          "stock": "In stock",
+          "freshness_hours": 19,
+          "match_score": 0.84
+        }
+      ]
+    },
+    {
+      "sku": "PYRA-S2510S",
+      "mpn": "S2510S",
+      "product": "Pyramex Safety Glasses, Clear Lens",
+      "category": "Eye Protection",
+      "brand": "Pyramex",
+      "uom": "EA",
+      "current_price": 4.9,
+      "cost": 2.85,
+      "stock": 420,
+      "base_demand": "rising",
+      "supply": "good",
+      "min_margin": 0.32,
+      "source_url": "https://www.questsafety.com/pyramex-safety-glasses-s2510s",
+      "competitors": [
+        {
+          "source": "Amazon",
+          "price": 5.2,
+          "stock": "In stock",
+          "freshness_hours": 7,
+          "match_score": 0.88
+        },
+        {
+          "source": "Grainger",
+          "price": 5.6,
+          "stock": "In stock",
+          "freshness_hours": 15,
+          "match_score": 0.85
+        },
+        {
+          "source": "Zoro",
+          "price": 5.1,
+          "stock": "In stock",
+          "freshness_hours": 10,
+          "match_score": 0.87
+        },
+        {
+          "source": "Uline",
+          "price": 5.45,
+          "stock": "In stock",
+          "freshness_hours": 24,
+          "match_score": 0.81
+        }
+      ]
+    },
+    {
+      "sku": "RADIAN-RW32",
+      "mpn": "RW32",
+      "product": "Radians Cooling Neck Shade, Lime",
+      "category": "Heat Stress",
+      "brand": "Radians",
+      "uom": "EA",
+      "current_price": 6.75,
+      "cost": 3.95,
+      "stock": 167,
+      "base_demand": "high",
+      "supply": "good",
+      "min_margin": 0.3,
+      "source_url": "https://www.questsafety.com/radians-cooling-neck-shade-rw32",
+      "competitors": [
+        {
+          "source": "Amazon",
+          "price": 7.1,
+          "stock": "In stock",
+          "freshness_hours": 6,
+          "match_score": 0.86
+        },
+        {
+          "source": "Grainger",
+          "price": 7.8,
+          "stock": "In stock",
+          "freshness_hours": 13,
+          "match_score": 0.84
+        },
+        {
+          "source": "Zoro",
+          "price": 7.2,
+          "stock": "In stock",
+          "freshness_hours": 11,
+          "match_score": 0.85
+        },
+        {
+          "source": "Fastenal",
+          "price": 7.55,
+          "stock": "In stock",
+          "freshness_hours": 22,
+          "match_score": 0.8
+        }
+      ]
+    },
+    {
+      "sku": "JUST-5070",
+      "mpn": "5070",
+      "product": "Justrite Safety Can, 5 Gallon Type I",
+      "category": "Flammables Storage",
+      "brand": "Justrite",
+      "uom": "EA",
+      "current_price": 75.18,
+      "cost": 51.0,
+      "stock": 37,
+      "base_demand": "stable",
+      "supply": "good",
+      "min_margin": 0.27,
+      "source_url": "https://www.questsafety.com/justrite-safety-can-5070",
+      "competitors": [
+        {
+          "source": "Amazon",
+          "price": 77.2,
+          "stock": "In stock",
+          "freshness_hours": 12,
+          "match_score": 0.84
+        },
+        {
+          "source": "Grainger",
+          "price": 81.9,
+          "stock": "In stock",
+          "freshness_hours": 18,
+          "match_score": 0.88
+        },
+        {
+          "source": "Zoro",
+          "price": 78.4,
+          "stock": "In stock",
+          "freshness_hours": 10,
+          "match_score": 0.86
+        },
+        {
+          "source": "Uline",
+          "price": 80.1,
+          "stock": "In stock",
+          "freshness_hours": 26,
+          "match_score": 0.82
+        }
+      ]
+    },
+    {
+      "sku": "NORTH-7700",
+      "mpn": "7700",
+      "product": "Honeywell North Full Facepiece Respirator, Medium Large",
+      "category": "Respirators",
+      "brand": "Honeywell North",
+      "uom": "EA",
+      "current_price": 179.05,
+      "cost": 132.5,
+      "stock": 23,
+      "base_demand": "rising",
+      "supply": "limited",
+      "min_margin": 0.26,
+      "source_url": "https://www.questsafety.com/honeywell-north-full-facepiece-respirator-7700",
+      "competitors": [
+        {
+          "source": "Amazon",
+          "price": 194.6,
+          "stock": "Limited",
+          "freshness_hours": 10,
+          "match_score": 0.83
+        },
+        {
+          "source": "Grainger",
+          "price": 201.8,
+          "stock": "In stock",
+          "freshness_hours": 17,
+          "match_score": 0.86
+        },
+        {
+          "source": "Zoro",
+          "price": 196.2,
+          "stock": "In stock",
+          "freshness_hours": 12,
+          "match_score": 0.85
+        },
+        {
+          "source": "Manufacturer feed",
+          "price": 198.5,
+          "stock": "In stock",
+          "freshness_hours": 8,
+          "match_score": 0.9
+        }
+      ]
+    },
+    {
+      "sku": "ULINE-S4242",
+      "mpn": "S-4242",
+      "product": "Spill Kit Universal Absorbent, 20 Gallon",
+      "category": "Spill Response",
+      "brand": "ULINE",
+      "uom": "EA",
+      "current_price": 89.9,
+      "cost": 61.8,
+      "stock": 52,
+      "base_demand": "stable",
+      "supply": "good",
+      "min_margin": 0.27,
+      "source_url": "https://www.questsafety.com/spill-kit-universal-absorbent-s-4242",
+      "competitors": [
+        {
+          "source": "Amazon",
+          "price": 94.1,
+          "stock": "In stock",
+          "freshness_hours": 11,
+          "match_score": 0.8
+        },
+        {
+          "source": "Grainger",
+          "price": 97.8,
+          "stock": "In stock",
+          "freshness_hours": 18,
+          "match_score": 0.84
+        },
+        {
+          "source": "Zoro",
+          "price": 95.0,
+          "stock": "In stock",
+          "freshness_hours": 13,
+          "match_score": 0.83
+        },
+        {
+          "source": "Fastenal",
+          "price": 96.4,
+          "stock": "In stock",
+          "freshness_hours": 20,
+          "match_score": 0.79
+        }
+      ]
+    }
+  ]
+}
