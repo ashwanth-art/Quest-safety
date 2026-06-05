@@ -4,6 +4,17 @@ const pageName = document.body.dataset.page || "dashboard";
 const money = new Intl.NumberFormat("en-US", { style: "currency", currency: "USD" });
 const pct = new Intl.NumberFormat("en-US", { style: "percent", maximumFractionDigits: 1 });
 
+async function readJsonResponse(response) {
+  const text = await response.text();
+
+  try {
+    return text ? JSON.parse(text) : {};
+  } catch (error) {
+    console.error("Server returned HTML/non-JSON:", text);
+    throw new Error("Server returned HTML instead of JSON. Check Render logs.");
+  }
+}
+
 function App() {
   const [catalog, setCatalog] = React.useState(null);
   const [error, setError] = React.useState("");
@@ -11,8 +22,9 @@ function App() {
   const loadCatalog = React.useCallback(async () => {
     try {
       const response = await fetch("/api/catalog");
-      const text = await response.text();
-      const data = text ? JSON.parse(text) : null;
+      // const text = await response.text();
+      // const data = text ? JSON.parse(text) : null;
+      const data = await readJsonResponse(response);
       if (!response.ok) {
         throw new Error(data?.error || `Catalog API failed (${response.status})`);
       }
@@ -154,8 +166,9 @@ function AnalyzerPage({ catalog, reloadCatalog }) {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ strategy: defaultStrategy, overrides }),
       });
-      const text = await response.text();
-      const nextPayload = text ? JSON.parse(text) : {};
+      // const text = await response.text();
+      // const nextPayload = text ? JSON.parse(text) : {};
+      const nextPayload = await readJsonResponse(response);
       setPayload(nextPayload);
       await reloadCatalog();
       if (!response.ok) setError(nextPayload.error || "Could not analyze the full catalog.");
@@ -402,7 +415,7 @@ function BulkReviewQueue({ items, reloadCatalog, onUpdate, currentPayload }) {
           price,
         }),
       });
-      const data = await response.json();
+      const data = await readJsonResponse(response)();
       if (!response.ok) {
         throw new Error(data.error || `Bulk action failed for ${sku}`);
       }
@@ -577,7 +590,7 @@ function PublishPanel({ result, reloadCatalog, onResultUpdated }) {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
       });
-      const data = await response.json();
+      const data = await readJsonResponse(response);
       if (!response.ok) {
         setError(data.error || "Could not complete review action.");
         return;
