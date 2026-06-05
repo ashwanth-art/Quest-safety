@@ -41,6 +41,7 @@ def create_app() -> Flask:
     agent = QuestPricingAgent(catalog_data)
     market_data = LiveMarketDataService()
     latest_analysis_by_sku: dict[str, dict[str, Any]] = {}
+    latest_catalog_run: dict[str, Any] | None = None
 
     def find_catalog_product(sku: str) -> dict[str, Any] | None:
         return agent.find_product(sku)
@@ -58,7 +59,8 @@ def create_app() -> Flask:
 
     def summarize_analysis_for_catalog(result: dict[str, Any]) -> dict[str, Any]:
         calc = result.get("calculation", {})
-        competitors = result.get("competitors", [])[:6]
+        product = result.get("product") or {}
+        competitors = competitors_with_required_amazon(product, result.get("competitors", []))[:6]
         return {
             "recommended_price": calc.get("recommended_price"),
             "risk": calc.get("risk"),
@@ -80,6 +82,44 @@ def create_app() -> Flask:
             ],
         }
 
+    def competitors_with_required_amazon(
+        product: dict[str, Any] | None,
+        competitors: list[dict[str, Any]],
+    ) -> list[dict[str, Any]]:
+        rows = [dict(item) for item in competitors]
+        if product and not any(is_amazon_source(row) for row in rows):
+            amazon_row = catalog_amazon_competitor(product)
+            if amazon_row:
+                rows.append(amazon_row)
+
+        rows.sort(
+            key=lambda row: (
+                0 if is_amazon_source(row) else 1,
+                -float(row.get("match_score", 0) or 0),
+                float(row.get("normalized_price", row.get("price", 0)) or 0),
+            )
+        )
+        return rows
+
+    def is_amazon_source(item: dict[str, Any]) -> bool:
+        return "amazon" in str(item.get("source", "")).lower()
+
+    def catalog_amazon_competitor(product: dict[str, Any]) -> dict[str, Any] | None:
+        for item in product.get("competitors", []):
+            if not is_amazon_source(item):
+                continue
+            row = dict(item)
+            row.setdefault("title", product.get("product", ""))
+            row.setdefault("offer_sku", product.get("mpn") or product.get("sku", ""))
+            row.setdefault("normalized_price", row.get("price"))
+            row.setdefault("normalized_uom", product.get("uom", "EA"))
+            row.setdefault("package_quantity", 1)
+            row.setdefault("package_type", str(product.get("uom", "EA")).lower())
+            row.setdefault("comparable", True)
+            row["data_source"] = row.get("data_source") or "required_amazon_catalog"
+            return row
+        return None
+
     def catalog_summary_with_latest_analysis() -> dict[str, Any]:
         summary = agent.catalog_summary()
         products = []
@@ -90,7 +130,44 @@ def create_app() -> Flask:
                 row["latest_analysis"] = latest
             products.append(row)
         summary["products"] = products
+        if latest_catalog_run:
+            summary["latest_catalog_run"] = latest_catalog_run
         return summary
+
+    def build_run_payload(summary: dict[str, Any], results: list[dict[str, Any]]) -> dict[str, Any]:
+        return {
+            "summary": summary,
+            "results": results,
+            "ran_at": datetime.now(timezone.utc).isoformat(),
+        }
+
+    def refresh_run_summary(payload: dict[str, Any]) -> None:
+        results = payload.get("results", [])
+        summary = payload.get("summary", {})
+        summary["auto_applied"] = sum(1 for result in results if result.get("publish", {}).get("status") == "auto_applied")
+        summary["pending_review"] = sum(1 for result in results if result.get("publish", {}).get("status") == "pending_review")
+        summary["applied"] = sum(1 for result in results if result.get("publish", {}).get("status") == "applied")
+        summary["rejected"] = sum(1 for result in results if result.get("publish", {}).get("status") == "rejected")
+        payload["summary"] = summary
+
+    def update_cached_catalog_run(sku: str, product: dict[str, Any], publish: dict[str, Any]) -> None:
+        if not latest_catalog_run:
+            return
+
+        for index, result in enumerate(latest_catalog_run.get("results", [])):
+            result_sku = str((result.get("product") or {}).get("sku") or (result.get("input") or {}).get("sku") or "")
+            if result_sku != sku:
+                continue
+
+            next_result = {
+                **result,
+                "product": product,
+                "publish": publish,
+            }
+            latest_catalog_run["results"][index] = next_result
+            latest_analysis_by_sku[sku] = summarize_analysis_for_catalog(next_result)
+            refresh_run_summary(latest_catalog_run)
+            return
 
     def apply_price_update(
         sku: str,
@@ -157,7 +234,7 @@ def create_app() -> Flask:
             market_message = live_result.message
             excluded_competitors = live_result.rejected_observations
             live_candidate_count = len(live_result.observations)
-            competitor_override = live_result.observations
+            competitor_override = competitors_with_required_amazon(product, live_result.observations)
             market_mode = live_result.status
         else:
             competitor_override = list((product or {}).get("competitors", []))
@@ -227,8 +304,17 @@ def create_app() -> Flask:
 
         return result
 
+    def no_cache(response):
+        response.headers["Cache-Control"] = "no-store, no-cache, must-revalidate, max-age=0"
+        response.headers["Pragma"] = "no-cache"
+        response.headers["Expires"] = "0"
+        return response
+
+    def uncached_page(filename: str):
+        return no_cache(send_from_directory(BASE_DIR, filename, max_age=0, conditional=False))
+
     def page(filename: str):
-        return send_from_directory(BASE_DIR, filename)
+        return uncached_page(filename)
 
     @app.get("/")
     def index():
@@ -248,11 +334,11 @@ def create_app() -> Flask:
 
     @app.get("/styles.css")
     def styles():
-        return send_from_directory(BASE_DIR, "styles.css")
+        return uncached_page("styles.css")
 
     @app.get("/app.js")
     def frontend_app():
-        return send_from_directory(BASE_DIR, "app.js")
+        return uncached_page("app.js")
 
     @app.get("/assets/<path:filename>")
     def assets(filename: str):
@@ -297,6 +383,7 @@ def create_app() -> Flask:
 
     @app.post("/api/analyze-catalog")
     def analyze_catalog():
+        nonlocal latest_catalog_run
         payload = request.get_json(silent=True) or {}
         strategy = str(payload.get("strategy", "balanced")).strip().lower()
         overrides = payload.get("overrides") or {}
@@ -328,7 +415,8 @@ def create_app() -> Flask:
             "medium_risk": sum(1 for result in results if result.get("calculation", {}).get("risk") == "medium"),
             "low_risk": sum(1 for result in results if result.get("calculation", {}).get("risk") == "low"),
         }
-        return jsonify({"summary": summary, "results": results})
+        latest_catalog_run = build_run_payload(summary, results)
+        return jsonify(latest_catalog_run)
 
     @app.post("/api/price-action")
     def price_action():
@@ -365,14 +453,19 @@ def create_app() -> Flask:
             }
             if persistence_enabled():
                 write_audit_entry(audit_entry)
+            publish = {
+                "status": "rejected",
+                "message": (
+                    "Price change was rejected. Current Quest price was left unchanged."
+                    if persistence_enabled()
+                    else "Price change was rejected in preview mode. Vercel deployment does not persist local file updates."
+                ),
+            }
+            update_cached_catalog_run(sku, product, publish)
             return jsonify(
                 {
-                    "status": "rejected",
-                    "message": (
-                        "Price change was rejected. Current Quest price was left unchanged."
-                        if persistence_enabled()
-                        else "Price change was rejected in preview mode. Vercel deployment does not persist local file updates."
-                    ),
+                    "status": publish["status"],
+                    "message": publish["message"],
                     "product": product,
                 }
             )
@@ -393,6 +486,13 @@ def create_app() -> Flask:
             source_route=route,
             risk=risk,
         )
+        cached_publish = {
+            "status": "applied",
+            "message": "Quest price was updated successfully.",
+            "previous_price": publish["previous_price"],
+            "updated_price": publish["updated_price"],
+        }
+        update_cached_catalog_run(sku, publish["product"], cached_publish)
         return jsonify(
             {
                 "status": "applied",
