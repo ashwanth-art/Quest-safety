@@ -41,6 +41,7 @@ function Header({ active }) {
     ["/", "Dashboard", "dashboard"],
     ["/analyzer", "Analyzer", "analyzer"],
     ["/catalog", "Catalog", "catalog"],
+    ["/competitor", "Competitor", "competitor"],
   ];
 
   return h(
@@ -49,8 +50,8 @@ function Header({ active }) {
     h(
       "a",
       { className: "brand", href: "/" },
-      h("span", { className: "brand-mark" }, "QS"),
-      h("span", null, h("strong", null, "Quest Safety"), h("small", null, "Pricing Agent"))
+      h("span", { className: "brand-mark" }, "AIS"),
+      h("span", null, h("strong", null, "American industrial safety product"), h("small", null, "Pricing Agent"))
     ),
     h(
       "nav",
@@ -63,6 +64,7 @@ function Header({ active }) {
 function PageRouter({ catalog, reloadCatalog }) {
   if (pageName === "analyzer") return h(AnalyzerPage, { catalog, reloadCatalog });
   if (pageName === "catalog") return h(CatalogPage, { catalog });
+  if (pageName === "competitor") return h(CompetitorPage, { catalog });
   return h(DashboardPage, { catalog });
 }
 
@@ -76,7 +78,7 @@ function DashboardPage({ catalog }) {
     { className: "page-shell" },
     h(PageTitle, {
       eyebrow: "Dashboard",
-      title: "Quest Safety pricing workspace",
+      title: "American industrial safety product pricing workspace",
       text: "Run the full catalog pricing agent, auto-apply safe changes, and review the rest.",
     }),
     h(
@@ -95,7 +97,8 @@ function DashboardPage({ catalog }) {
       "section",
       { className: "action-grid" },
       h(ActionCard, { href: "/analyzer", title: "Run Full Catalog Analyzer", text: "Check every Quest SKU in one run and publish low-risk price changes automatically." }),
-      h(ActionCard, { href: "/catalog", title: "Browse Catalog", text: "Review the 20 sample Quest Safety products included in this prototype." })
+      h(ActionCard, { href: "/catalog", title: "Browse Catalog", text: "Review product-only catalog rows." }),
+      h(ActionCard, { href: "/competitor", title: "View Competitors", text: "After an agent run, compare competitor names and prices by SKU." })
     ),
     h(
       "section",
@@ -336,7 +339,7 @@ function AutoAppliedQueue({ items }) {
     "section",
     { className: "panel" },
     h("h2", null, "Auto-applied low-risk updates"),
-    h("p", null, "These low-risk SKUs were automatically updated in Quest Safety during the latest run."),
+    h("p", null, "These low-risk SKUs were automatically updated during the latest run."),
     h(
       "div",
       { className: "catalog-list" },
@@ -658,8 +661,8 @@ function CatalogPage({ catalog }) {
     { className: "page-shell" },
     h(PageTitle, {
       eyebrow: "Catalog",
-      title: "Quest catalog examples",
-      text: "This prototype now includes 20 Quest Safety products for catalog-wide pricing analysis.",
+      title: "Product catalog",
+      text: `This catalog includes ${catalog.products.length} products for pricing analysis.`,
     }),
     h(
       "section",
@@ -680,6 +683,92 @@ function CatalogPage({ catalog }) {
         )
       )
     )
+  );
+}
+
+function CompetitorPage({ catalog }) {
+  const [query, setQuery] = React.useState("");
+  const products = catalog.products.filter((product) =>
+    `${product.sku} ${product.mpn} ${product.product} ${product.brand} ${product.category}`.toLowerCase().includes(query.toLowerCase())
+  );
+
+  return h(
+    "main",
+    { className: "page-shell" },
+    h(PageTitle, {
+      eyebrow: "Competitor",
+      title: "Competitor prices by SKU",
+      text: "Run the pricing agent first. This page then shows each SKU with the latest comparable competitor names and prices.",
+    }),
+    h(
+      "section",
+      { className: "panel" },
+      h(Field, { label: "Search competitors", children: h("input", { value: query, placeholder: "SKU, MPN, product, brand, competitor", onChange: (event) => setQuery(event.target.value) }) }),
+      h(
+        "div",
+        { className: "catalog-list" },
+        products.map((product) => h(CompetitorProductCard, { product, key: product.sku }))
+      )
+    )
+  );
+}
+
+function CompetitorProductCard({ product }) {
+  const latest = product.latest_analysis;
+  const competitors = latest?.competitors || [];
+
+  return h(
+    "article",
+    { className: "catalog-card" },
+    h(
+      "div",
+      { className: "catalog-row" },
+      h("span", null, product.sku),
+      h("strong", null, product.product),
+      h("small", null, `${product.brand} | ${product.category} | ${product.stock} ${product.uom}`),
+      h("b", null, formatMoney(product.current_price))
+    ),
+    latest
+      ? h(
+          "div",
+          { className: "catalog-competitors" },
+          h(
+            "div",
+            { className: "catalog-analysis-head" },
+            h("strong", null, "Latest agent run competitors"),
+            h(
+              "small",
+              null,
+              [
+                latest.route ? `Route ${latest.route}` : null,
+                latest.risk ? `Risk ${capitalize(latest.risk)}` : null,
+                latest.recommended_price ? `Recommended ${formatMoney(latest.recommended_price)}` : null,
+              ]
+                .filter(Boolean)
+                .join(" | ")
+            )
+          ),
+          competitors.length
+            ? h(
+                "div",
+                { className: "competitor-price-grid" },
+                competitors.map((item, index) =>
+                  h(
+                    "div",
+                    { className: "competitor-price-chip", key: `${product.sku}-${item.source}-${index}` },
+                    h("strong", null, item.source || "Competitor"),
+                    h("span", null, formatCatalogCompetitorPrice(item)),
+                    item.title ? h("small", null, item.title) : null
+                  )
+                )
+              )
+            : h("p", { className: "subtle-note" }, "No comparable competitor price was found for this SKU.")
+        )
+      : h(
+          "div",
+          { className: "catalog-competitors empty" },
+          h("span", null, "Run pricing agent to show competitor prices for this SKU.")
+        )
   );
 }
 
@@ -732,7 +821,7 @@ function ErrorPage({ error }) {
 }
 
 function Footer() {
-  return h("footer", { className: "footer" }, h("span", null, "Quest Safety Flask + React pricing agent"), h("span", null, "Catalog-wide live pricing and approval workflow."));
+  return h("footer", { className: "footer" }, h("span", null, "American industrial safety product pricing agent"), h("span", null, "Catalog-wide live pricing and approval workflow."));
 }
 
 function buildOverrides(products) {
@@ -749,6 +838,17 @@ function buildOverrides(products) {
 
 function formatMoney(value) {
   return typeof value === "number" && Number.isFinite(value) ? money.format(value) : "-";
+}
+
+function formatCatalogCompetitorPrice(item) {
+  const normalized = typeof item.normalized_price === "number" ? item.normalized_price : item.price;
+  const raw = typeof item.price === "number" ? item.price : normalized;
+  const uom = item.normalized_uom || "UOM";
+  if (typeof normalized !== "number") return "-";
+  if (typeof raw === "number" && Math.abs(raw - normalized) > 0.01) {
+    return `${formatMoney(normalized)} / ${uom} (raw ${formatMoney(raw)})`;
+  }
+  return `${formatMoney(normalized)} / ${uom}`;
 }
 
 function formatPercent(value, signed = false) {

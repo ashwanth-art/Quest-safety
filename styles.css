@@ -335,6 +335,74 @@ h3 {
   text-align: right;
 }
 
+.catalog-card {
+  display: grid;
+  gap: 10px;
+  background: #f8fafb;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+}
+
+.catalog-card .catalog-row {
+  border: 0;
+  box-shadow: none;
+}
+
+.catalog-competitors {
+  display: grid;
+  gap: 10px;
+  padding: 0 12px 12px;
+}
+
+.catalog-competitors.empty {
+  color: var(--muted);
+  font-size: 0.9rem;
+}
+
+.catalog-analysis-head {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding-top: 8px;
+  border-top: 1px solid var(--line);
+}
+
+.catalog-analysis-head small {
+  color: var(--muted);
+  text-align: right;
+}
+
+.competitor-price-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.competitor-price-chip {
+  display: grid;
+  gap: 4px;
+  min-height: 82px;
+  padding: 10px;
+  background: var(--white);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+}
+
+.competitor-price-chip strong {
+  color: var(--teal);
+}
+
+.competitor-price-chip span {
+  color: var(--navy);
+  font-weight: 850;
+}
+
+.competitor-price-chip small {
+  color: var(--muted);
+  line-height: 1.35;
+  overflow-wrap: anywhere;
+}
+
 .form-panel {
   align-self: start;
 }
@@ -805,6 +873,10 @@ code {
     grid-template-columns: 90px minmax(0, 1fr);
   }
 
+  .competitor-price-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+
   .table-row small,
   .table-row b,
   .catalog-row small,
@@ -848,9 +920,14 @@ code {
   }
 
   .result-title,
+  .catalog-analysis-head,
   .offer-head,
   .footer,
   .approval-actions {
     flex-direction: column;
+  }
+
+  .competitor-price-grid {
+    grid-template-columns: 1fr;
   }
 }

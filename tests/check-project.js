@@ -10,9 +10,7 @@ const requiredFiles = [
   "index.html",
   "analyzer.html",
   "catalog.html",
-  "agents.html",
-  "backend.html",
-  "workflow.html",
+  "competitor.html",
   "styles.css",
   "app.js",
   "data/catalog.json",
@@ -62,8 +60,23 @@ if (!frontend.includes("/api/analyze-catalog")) {
 if (!frontend.includes("Human approval required") || !frontend.includes("Run pricing agent for all catalog SKUs")) {
   throw new Error("Frontend must support catalog-wide analysis and human approval.");
 }
+if (frontend.includes("Fetch live competitor prices") || frontend.includes("use_live_market")) {
+  throw new Error("Frontend should not show a manual live-competitor toggle.");
+}
+if (!frontend.includes("American industrial safety product")) {
+  throw new Error("Frontend must use the American industrial safety product name.");
+}
+if (!frontend.includes("CompetitorPage") || !frontend.includes("Latest agent run competitors") || !frontend.includes("competitor-price-chip")) {
+  throw new Error("Competitor page must show competitor names and prices after an agent run.");
+}
+if (!frontend.includes('["/competitor", "Competitor", "competitor"]')) {
+  throw new Error("Navigation must include the Competitor page.");
+}
+if (frontend.includes("Agent Basis") || frontend.includes('["/backend"') || frontend.includes('["/workflow"')) {
+  throw new Error("Navigation should only include Dashboard, Analyzer, Catalog, and Competitor.");
+}
 
-for (const page of ["index.html", "analyzer.html", "catalog.html", "agents.html", "backend.html", "workflow.html"]) {
+for (const page of ["index.html", "analyzer.html", "catalog.html", "competitor.html"]) {
   const html = fs.readFileSync(path.join(root, page), "utf8");
   if (!html.includes('src="/app.js"')) {
     throw new Error(`${page} must load the shared React app.`);
@@ -85,6 +98,15 @@ if (!backend.includes("market_override_applied = True")) {
 }
 if (!backend.includes("/api/analyze-catalog")) {
   throw new Error("Backend must support catalog-wide analysis.");
+}
+if (!backend.includes('@app.get("/competitor")')) {
+  throw new Error("Backend must serve the Competitor page.");
+}
+if (backend.includes('@app.get("/agents")') || backend.includes('@app.get("/backend")') || backend.includes('@app.get("/workflow")')) {
+  throw new Error("Backend should only serve the four requested app pages.");
+}
+if (!backend.includes("latest_analysis_by_sku") || !backend.includes("catalog_summary_with_latest_analysis")) {
+  throw new Error("Backend must cache latest analysis results for the catalog page.");
 }
 
 const marketData = fs.readFileSync(path.join(root, "market_data.py"), "utf8");

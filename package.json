@@ -2,7 +2,7 @@
   "name": "quest-safety-flask-react-pricing-agent",
   "version": "2.0.0",
   "private": true,
-  "description": "Quest Safety Flask backend and React frontend for AI pricing and human approval workflow.",
+  "description": "American Industrial Safety Product Flask backend and React frontend for AI pricing and human approval workflow.",
   "scripts": {
     "start": "python app.py",
     "test": "node tests/check-project.js"

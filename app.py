@@ -40,6 +40,7 @@ def create_app() -> Flask:
     catalog_data = load_catalog()
     agent = QuestPricingAgent(catalog_data)
     market_data = LiveMarketDataService()
+    latest_analysis_by_sku: dict[str, dict[str, Any]] = {}
 
     def find_catalog_product(sku: str) -> dict[str, Any] | None:
         return agent.find_product(sku)
@@ -54,6 +55,42 @@ def create_app() -> Flask:
 
     def live_catalog_run_enabled() -> bool:
         return not IS_VERCEL or VERCEL_LIVE_LOOKUP_ENABLED
+
+    def summarize_analysis_for_catalog(result: dict[str, Any]) -> dict[str, Any]:
+        calc = result.get("calculation", {})
+        competitors = result.get("competitors", [])[:6]
+        return {
+            "recommended_price": calc.get("recommended_price"),
+            "risk": calc.get("risk"),
+            "route": calc.get("route"),
+            "market_data": result.get("market_data", {}),
+            "competitors": [
+                {
+                    "source": item.get("source"),
+                    "price": item.get("price"),
+                    "normalized_price": item.get("normalized_price", item.get("price")),
+                    "normalized_uom": item.get("normalized_uom"),
+                    "title": item.get("title"),
+                    "offer_sku": item.get("offer_sku"),
+                    "image": item.get("image"),
+                    "stock": item.get("stock"),
+                    "match_score": item.get("match_score"),
+                }
+                for item in competitors
+            ],
+        }
+
+    def catalog_summary_with_latest_analysis() -> dict[str, Any]:
+        summary = agent.catalog_summary()
+        products = []
+        for product in summary.get("products", []):
+            row = dict(product)
+            latest = latest_analysis_by_sku.get(str(product.get("sku", "")))
+            if latest:
+                row["latest_analysis"] = latest
+            products.append(row)
+        summary["products"] = products
+        return summary
 
     def apply_price_update(
         sku: str,
@@ -186,6 +223,8 @@ def create_app() -> Flask:
                     "allowed_actions": ["approve", "reject", "modify"],
                 }
 
+            latest_analysis_by_sku[result["product"]["sku"]] = summarize_analysis_for_catalog(result)
+
         return result
 
     def page(filename: str):
@@ -203,17 +242,9 @@ def create_app() -> Flask:
     def catalog_page():
         return page("catalog.html")
 
-    @app.get("/agents")
-    def agents_page():
-        return page("agents.html")
-
-    @app.get("/backend")
-    def backend_page():
-        return page("backend.html")
-
-    @app.get("/workflow")
-    def workflow_page():
-        return page("workflow.html")
+    @app.get("/competitor")
+    def competitor_page():
+        return page("competitor.html")
 
     @app.get("/styles.css")
     def styles():
@@ -233,7 +264,7 @@ def create_app() -> Flask:
 
     @app.get("/api/catalog")
     def catalog():
-        return jsonify(agent.catalog_summary())
+        return jsonify(catalog_summary_with_latest_analysis())
 
     @app.post("/api/analyze")
     def analyze():

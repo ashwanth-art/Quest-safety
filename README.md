@@ -1,6 +1,6 @@
-# Quest Safety Flask + React Pricing Agent
+# American Industrial Safety Product Flask + React Pricing Agent
 
-This project is a Flask backend plus React frontend for the Quest Safety AI
+This project is a Flask backend plus React frontend for the American Industrial Safety Product AI
 pricing and human approval workflow.
 
 The user can enter any Quest SKU, choose a demand signal, select a pricing
@@ -59,11 +59,9 @@ The UI is split into separate HTML pages so each screen stays focused:
 
 ```text
 index.html       Dashboard
-analyzer.html    SKU input, demand input, and pricing recommendation preview
-catalog.html     Quest SKU sample catalog
-agents.html      Agent basis, factors, and formula
-backend.html     Flask API workflow and endpoints
-workflow.html    Documentation and architecture reference
+analyzer.html    Full catalog pricing agent
+catalog.html     Product-only catalog
+competitor.html  Latest competitor names and prices after an agent run
 ```
 
 Routes:
@@ -72,6 +70,7 @@ Routes:
 /
 /analyzer
 /catalog
+/competitor
 /agents
 /backend
 /workflow
@@ -94,10 +93,8 @@ pricing_agent.py        Pricing agent and calculation logic
 data/catalog.json       Quest SKU sample data and market observations
 index.html              Dashboard page
 analyzer.html           SKU analyzer page
-catalog.html            Catalog page
-agents.html             Agent basis page
-backend.html            Backend workflow page
-workflow.html           Document/reference page
+catalog.html            Product-only catalog page
+competitor.html         Competitor price page
 app.js                  Shared React frontend logic
 styles.css              Simplified professional responsive UI
 docs/workflow.md        Full workflow document
